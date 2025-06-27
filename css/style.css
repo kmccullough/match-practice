@@ -1,0 +1,39 @@
+:root {
+  --term-gap: 2rem;
+  --term-radius: 2rem;
+}
+
+.input-term-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--term-gap);
+  padding-bottom: var(--term-gap);
+}
+
+.terms {
+  padding: var(--term-gap);
+}
+
+.terms,
+.term {
+  border: 2px solid rgba(0, 0, 0, .5);
+  border-radius: var(--term-radius);
+}
+
+.term-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--term-gap);
+}
+
+.term-row:not(:first-child) {
+  padding-top: var(--term-gap);
+}
+
+.term {
+  border: 1px solid rgba(0, 0, 0, .5);
+  border-radius: var(--term-radius);
+  padding: var(--term-gap);
+  text-align: center;
+  font-size: 1.5rem;
+}
