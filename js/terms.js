@@ -1,3 +1,4 @@
+import { shuffle } from './array.js';
 import { inputTermsEl, practiceTermsEl } from './elements.js';
 import { inputTermsRowFactory } from './component/input-terms/row.js';
 import PracticeTermsRowComponent from './component/practice-terms/row.js';
@@ -30,5 +31,20 @@ export const terms = new class TermsService {
 
   getRandom() {
     return this.terms[Math.floor(Math.random() * this.terms.length)];
+  }
+
+  getRandomByCount(count) {
+    const terms = [];
+    let shuffled;
+    while (count > 0) {
+      shuffled = this.getShuffled();
+      count -= shuffled.length;
+      terms.push(count >= 0 ? shuffled : shuffled.slice(0, count));
+    }
+    return terms.flat();
+  }
+
+  getShuffled() {
+    return shuffle(this.terms.slice());
   }
 };
