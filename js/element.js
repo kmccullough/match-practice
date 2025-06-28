@@ -1,13 +1,23 @@
-export function elementFromHtml(html) {
+export function elementFromHtml(html, init = null) {
   const fragment = document.createElement('div');
   fragment.innerHTML = html;
-  return fragment.firstChild;
+  const el = fragment.firstChild;
+  init?.(el);
+  return el;
 }
 
-export function factoryFromHtml(html) {
+export function factoryFromHtml(html, init = null) {
   let el;
   return () => {
     el ??= elementFromHtml(html);
-    return el.cloneNode(true);
+    const clone = el.cloneNode(true);
+    init?.(clone);
+    return clone;
   };
+}
+
+export function removeElement(el) {
+  try {
+    el?.remove();
+  } catch (e) {}
 }
