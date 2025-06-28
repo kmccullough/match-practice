@@ -3,7 +3,6 @@ import { inputTermsRowFactory } from './component/input-terms/row.js';
 import PracticeTermsRowComponent from './component/practice-terms/row.js';
 import PracticeTermComponent from './component/practice-terms/row/term.js';
 
-
 export const terms = new class TermsService {
   terms = [];
 
@@ -28,4 +27,8 @@ export const terms = new class TermsService {
 
     this.terms.push({ term, match });
   }
-}();
+
+  getRandom() {
+    return this.terms[Math.floor(Math.random() * this.terms.length)];
+  }
+};

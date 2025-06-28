@@ -1,4 +1,5 @@
 import Component from '../component.js';
+import { practice } from '../practice.js';
 
 export default Component.define
 
@@ -10,7 +11,7 @@ export default Component.define
   constructor(element) {
     super(element);
     element.querySelector('.start').addEventListener('click', () => {
-
+      practice.start();
     });
   }
 });

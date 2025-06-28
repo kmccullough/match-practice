@@ -21,3 +21,11 @@ export function removeElement(el) {
     el?.remove();
   } catch (e) {}
 }
+
+export function select(selector, context = document.body) {
+  return !context ? null : context.matches?.(selector) ? context : context?.querySelector(selector);
+}
+
+export function selectAll(selector, context = document.body) {
+  return !context ? [] : context.matches?.(selector) ? [ context ] : context?.querySelectorAll(selector);
+}
