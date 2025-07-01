@@ -37,3 +37,15 @@
   text-align: center;
   font-size: 1.5rem;
 }
+
+.term.selected {
+  background-color: lightskyblue;
+}
+
+.term.correct {
+  background-color: palegreen;
+}
+
+.term.incorrect {
+  background-color: lightcoral;
+}
