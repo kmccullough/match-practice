@@ -36,13 +36,20 @@
   padding: var(--term-gap);
   text-align: center;
   font-size: 1.5rem;
+  transition: all .5s;
+}
+
+.term.empty {
+  opacity: 0;
+  transition: opacity .5s;
 }
 
 .term.selected {
   background-color: lightskyblue;
 }
 
-.term.correct {
+.term.correct,
+.term.empty {
   background-color: palegreen;
 }
 

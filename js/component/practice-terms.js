@@ -19,6 +19,7 @@ export default Component.define
   selectedElements;
   elementTermMap;
   elementMatchMap;
+  incorrectElements;
 
   constructor(element) {
     super(element);
@@ -37,11 +38,12 @@ export default Component.define
     this.emptyMatchElements = [];
     this.elementTermMap = new WeakMap();
     this.elementMatchMap = new WeakMap();
+    this.incorrectElements = new WeakMap();
 
     this.termsListElement.innerText = '';
 
-    const { termCount } = practice;
-    for (let i = 0; i < termCount; ++i) {
+    const { termCountPerRound } = practice;
+    for (let i = 0; i < termCountPerRound; ++i) {
       const termRowCmp = PracticeTermsRowComponent();
       const termRowEl = termRowCmp.element;
 
@@ -63,28 +65,32 @@ export default Component.define
   }
 
   fillTerms() {
-    const count = this.emptyMatchElements.length;
-    if (!count) {
+    const { emptyMatchElements } = this;
+    const count = emptyMatchElements.length;
+    if (count < practice.termCountPerRound) {
       return;
     }
-    shuffle(this.emptyMatchElements);
+    shuffle(emptyMatchElements);
     const terms = practice.consumeTerms(count);
-    const {
-      emptyTermElements, emptyMatchElements,
-      elementTermMap, elementMatchMap,
-    } = this;
+    const { emptyTermElements, elementTermMap, elementMatchMap } = this;
     for (let i = 0; i < terms.length; ++i) {
       const term = terms[i];
       const termEl = emptyTermElements.shift();
       termEl.innerText = term.term;
+      termEl.classList.remove('empty');
       elementTermMap.set(termEl, term);
       const matchEl = emptyMatchElements.shift();
       matchEl.innerText = term.match;
+      matchEl.classList.remove('empty');
       elementMatchMap.set(matchEl, term);
     }
   }
 
   selectElement(selectionIndex, element) {
+    const term = (selectionIndex ? this.elementMatchMap : this.elementTermMap).get(element);
+    if (term.correct) {
+      return;
+    }
     if (this.selectedElements[selectionIndex]) {
       this.selectedElements[selectionIndex].classList.remove('selected', 'incorrect');
     }
@@ -107,5 +113,41 @@ export default Component.define
     matchEl.classList.remove(oldClass, 'selected');
     matchEl.classList.add(newClass);
     this.selectedElements = [ null, null ];
+    term.correct = isMatch;
+    if (isMatch) {
+      this.setCorrectElements(termEl, matchEl);
+    } else {
+      this.setIncorrectElements(termEl, matchEl);
+      this.incorrect = (this.incorrect ?? 0) + 1;
+      ++practice.incorrectCount;
+    }
+  }
+
+  setCorrectElements(...elements) {
+    setTimeout(() => {
+      const empties = [ this.emptyTermElements, this.emptyMatchElements ];
+      for (let i = 0; i < elements.length; ++i) {
+        const el = elements[i];
+        el.classList.remove('correct');
+        el.classList.add('empty');
+        empties[i].push(el);
+      }
+      this.fillTerms();
+    }, practice.correctDisplayTime);
+  }
+
+  setIncorrectElements(...elements) {
+    const { incorrectElements } = this;
+    for (const el of elements) {
+      if (incorrectElements.has(el)) {
+        clearTimeout(incorrectElements.get(el));
+        incorrectElements.delete(el);
+      }
+      this.incorrectElements.set(el,
+        setTimeout(() => {
+          el.classList.remove('incorrect');
+        }, practice.incorrectDisplayTime)
+      );
+    }
   }
 });
