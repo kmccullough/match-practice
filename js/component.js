@@ -2,6 +2,11 @@ import { factoryFromHtml } from './element.js';
 import { expr } from './tag-template.js';
 
 export class Component {
+  /**
+   * @type {HTMLElement}
+   */
+  element;
+
   constructor(element) {
     if (this._baseConstructed) {
       return;

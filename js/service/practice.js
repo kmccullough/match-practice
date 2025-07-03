@@ -1,5 +1,6 @@
-import { Events } from './events.js';
-import { terms } from './terms.js';
+import { Events } from '../events.js';
+import { terms } from '../terms.js';
+import { routes } from './routes.js';
 
 export const practice = new class PracticeService {
   events = new Events();
@@ -32,6 +33,7 @@ export const practice = new class PracticeService {
       .map((term, index) => ({ ...term, index }));
     this.incorrectCount = 0;
     this.events.emitWithContext(this, 'start');
+    routes.transitionTo('practice');
   }
 
   consumeTerms(count) {

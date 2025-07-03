@@ -1,7 +1,12 @@
+import { plansEl, practiceEl, termsEl } from './elements.js';
+import { linkTo } from './helper/link-to.js';
+import { routes } from './routes.js';
+import { helpers } from './service/helpers.js';
 import { terms } from './terms.js';
-import { mainEl, inputTermsEl, practiceSetupEl, practiceTermsEl } from './elements.js';
 
-mainEl.append(inputTermsEl, practiceSetupEl, practiceTermsEl);
+helpers
+  .register('[data-link-to]', linkTo)
+  .apply([ document.body, termsEl, plansEl, practiceEl ])
 
 // Test data
 for (let i = 0; i < 5; ++i) {
@@ -10,3 +15,5 @@ for (let i = 0; i < 5; ++i) {
     String.fromCharCode('A'.charCodeAt(0) + i)
   );
 }
+
+routes.transitionTo('terms');

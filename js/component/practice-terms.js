@@ -1,8 +1,8 @@
 import { shuffle } from '../array.js';
 import Component from '../component.js';
 import { select } from '../element.js';
-import { practiceTermsEl } from '../elements.js';
-import { practice } from '../practice.js';
+import { practiceEl } from '../elements.js';
+import { practice } from '../service/practice.js';
 import PracticeTermsRowComponent from './practice-terms/row.js';
 import PracticeTermComponent from './practice-terms/row/term.js';
 
@@ -60,7 +60,7 @@ export default Component.define
       this.emptyMatchElements.push(matchEl);
 
       termRowEl.append(termEl, matchEl);
-      practiceTermsEl.append(termRowEl);
+      practiceEl.append(termRowEl);
     }
   }
 

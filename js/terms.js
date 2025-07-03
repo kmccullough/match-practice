@@ -1,5 +1,5 @@
 import { shuffle } from './array.js';
-import { inputTermsEl, practiceTermsEl } from './elements.js';
+import { termsEl, practiceEl } from './elements.js';
 import { inputTermsRowFactory } from './component/input-terms/row.js';
 import PracticeTermsRowComponent from './component/practice-terms/row.js';
 import PracticeTermComponent from './component/practice-terms/row/term.js';
@@ -13,7 +13,7 @@ export const terms = new class TermsService {
     const inputMatchEl =  inputTermRowEl.querySelector('.input-match input');
     inputTermEl.value = term;
     inputMatchEl.value = match;
-    inputTermsEl.append(inputTermRowEl);
+    termsEl.append(inputTermRowEl);
 
     const termRowCmp = PracticeTermsRowComponent();
     const termRowEl = termRowCmp.element;
@@ -24,7 +24,7 @@ export const terms = new class TermsService {
     const matchEl = matchCmp.element;
     matchEl.innerText = match;
     termRowEl.append(termEl, matchEl);
-    practiceTermsEl.append(termRowEl);
+    practiceEl.append(termRowEl);
 
     this.terms.push({ term, match });
   }
