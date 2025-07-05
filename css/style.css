@@ -1,5 +1,5 @@
 :root {
-  --term-gap: 2rem;
+  --primary-padding: 2vmin;
   --term-radius: 2rem;
 }
 
@@ -59,8 +59,9 @@ nav ul {
 nav li {
   cursor: pointer;
   text-transform: uppercase;
-  padding: 1rem;
+  padding: 1rem 1vmin;
   font-weight: bold;
+  font-size: max(1rem, 2vmin);
 }
 
 nav li.active-route {
@@ -76,23 +77,21 @@ nav li:hover {
 main {
   grid-area: main;
   overflow: auto;
-  height: 100%;
-  padding: 2rem;
+  padding: var(--primary-padding);
 }
 
 .input-term-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--term-gap);
-  padding-bottom: var(--term-gap);
+  gap: var(--primary-padding);
+  padding-bottom: var(--primary-padding);
 }
 
 .terms {
-  padding: var(--term-gap);
-}
-
-.terms,
-.term {
+  --terms-border-width: 2px;
+  display: grid;
+  padding: var(--primary-padding);
+  min-height: calc(100% - (var(--primary-padding) + var(--terms-border-width)) * 2);
   border: 2px solid rgba(0, 0, 0, .5);
   border-radius: var(--term-radius);
 }
@@ -100,20 +99,22 @@ main {
 .term-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--term-gap);
+  gap: var(--primary-padding);
 }
 
 .term-row:not(:first-child) {
-  padding-top: var(--term-gap);
+  padding-top: var(--primary-padding);
 }
 
 .term {
   border: 1px solid rgba(0, 0, 0, .5);
   border-radius: var(--term-radius);
-  padding: var(--term-gap);
-  text-align: center;
+  padding: var(--primary-padding);
   font-size: 1.5rem;
   transition: all .5s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .term.empty {
