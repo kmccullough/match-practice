@@ -1,14 +1,13 @@
 import { shuffle } from '../array.js';
 import Component from '../component.js';
 import { select } from '../element.js';
-import { practiceEl } from '../elements.js';
 import { practice } from '../service/practice.js';
 import PracticeTermsRowComponent from './practice-terms/row.js';
 import PracticeTermComponent from './practice-terms/row/term.js';
 
 export default Component.define
 
-`<div class="terms terms-list"></div>`
+`<div class="terms content"><div class="terms-list"></div></div>`
 
 (class extends Component {
   termsListElement;
@@ -60,7 +59,7 @@ export default Component.define
       this.emptyMatchElements.push(matchEl);
 
       termRowEl.append(termEl, matchEl);
-      practiceEl.append(termRowEl);
+      this.termsListElement.append(termRowEl);
     }
   }
 

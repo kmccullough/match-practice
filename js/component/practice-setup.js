@@ -3,7 +3,7 @@ import { practice } from '../service/practice.js';
 
 export default Component.define
 
-`<div class="practice-setup">
+`<div class="practice-setup content">
   <button class="start">Start</button>
 </div>`
 

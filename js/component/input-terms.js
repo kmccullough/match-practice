@@ -10,12 +10,34 @@ const matchColumn = 1;
 export default Component.define
 
 `<div class="input-terms">
-  <button class="import">Import</button>
+  <div class="input-terms-content content">
+    <div class="input-terms-lists">
+      <div class="input-terms-list">
+        <div class="input-terms-heading">
+          <span class="input-terms-list-expand-icon">&#9660;</span>
+          <div class="input-terms-title">
+            Example Terms
+          </div>
+          <span class="input-terms-list-delete">&#10006;<span>
+        </div>
+        <div class="input-terms-list-list">
+        
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav>
+    <ul>
+      <li class="import" data-action="import-list">Import List</li>
+      <li data-action="add-list">Add List</li>
+    </ul>
+  </nav>
 </div>`
 
 (class extends Component {
   constructor(element) {
     super(element);
+
     element.querySelector('.import').addEventListener('click', () => {
       const input = document.createElement('input');
       input.type = 'file';
@@ -43,6 +65,23 @@ export default Component.define
         }
       };
       input.click();
+    });
+
+    element.querySelector('.input-terms-heading').addEventListener('click', ({ currentTarget }) => {
+      const icon = currentTarget.querySelector('.input-terms-list-expand-icon');
+      const list = element.querySelector('.input-terms-list-list');
+      const isExpanded = currentTarget.getAttribute('aria-expanded') !== 'true';
+      currentTarget.setAttribute('aria-expanded', isExpanded);
+      icon.innerHTML = isExpanded ? '&#9660;' : '&#9658;';
+      if (isExpanded) {
+        list.style.display = '';
+      } else {
+        list.style.display = 'none';
+      }
+    });
+
+    element.querySelector('.input-terms-list-delete').addEventListener('click', () => {
+
     });
   }
 });

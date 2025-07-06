@@ -76,8 +76,51 @@ nav li:hover {
 
 main {
   grid-area: main;
-  overflow: auto;
+  overflow: hidden;
+}
+
+.content {
+  overflow-y: auto;
   padding: var(--primary-padding);
+}
+
+.input-terms {
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto min-content;
+}
+
+.input-terms nav {
+  background-color: #aaa;
+  color: #222;
+}
+
+.input-terms nav ul {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.input-terms nav li:hover {
+  background-color: #ccc;
+  color: #000;
+}
+
+.input-terms-heading {
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  background-color: indigo;
+  color: white;
+  padding: .5rem;
+}
+
+.input-terms-list-expand-icon {
+  width: 1rem;
+}
+
+.input-terms-title {
+  padding: 0 .5rem;
+}
+.input-terms-list-list  {
+  padding-top: .5rem;
 }
 
 .input-term-row {
@@ -87,7 +130,21 @@ main {
   padding-bottom: var(--primary-padding);
 }
 
+.input-terms-content {
+  padding: var(--primary-padding);
+}
+
+.input-terms input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
 .terms {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.terms-list {
   --terms-border-width: 2px;
   display: grid;
   padding: var(--primary-padding);

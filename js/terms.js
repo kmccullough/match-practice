@@ -1,8 +1,7 @@
 import { shuffle } from './array.js';
-import { termsEl, practiceEl } from './elements.js';
 import { inputTermsRowFactory } from './component/input-terms/row.js';
-import PracticeTermsRowComponent from './component/practice-terms/row.js';
-import PracticeTermComponent from './component/practice-terms/row/term.js';
+import { select } from './element.js';
+import { termsEl } from './elements.js';
 
 export const terms = new class TermsService {
   terms = [];
@@ -13,18 +12,7 @@ export const terms = new class TermsService {
     const inputMatchEl =  inputTermRowEl.querySelector('.input-match input');
     inputTermEl.value = term;
     inputMatchEl.value = match;
-    termsEl.append(inputTermRowEl);
-
-    const termRowCmp = PracticeTermsRowComponent();
-    const termRowEl = termRowCmp.element;
-    const termCmp = PracticeTermComponent();
-    const termEl = termCmp.element;
-    termEl.innerText = term;
-    const matchCmp = PracticeTermComponent();
-    const matchEl = matchCmp.element;
-    matchEl.innerText = match;
-    termRowEl.append(termEl, matchEl);
-    practiceEl.append(termRowEl);
+    select('.input-terms-list-list', termsEl).append(inputTermRowEl);
 
     this.terms.push({ term, match });
   }
