@@ -3,6 +3,15 @@
   --term-radius: 2rem;
 }
 
+html {
+  font-family: sans-serif;
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.8rem;
+}
+
 html,
 body,
 .wrapper {
@@ -28,7 +37,6 @@ body {
 
 header,
 nav {
-  font-family: sans-serif;
   z-index: 0;
 }
 
@@ -40,6 +48,7 @@ header {
 
 header h1 {
   margin: .5rem 1rem;
+  font-size: clamp(1rem, 4vmax, 3rem);
 }
 
 nav {
@@ -59,9 +68,9 @@ nav ul {
 nav li {
   cursor: pointer;
   text-transform: uppercase;
-  padding: 1rem 1vmin;
+  padding: 1rem 0;
   font-weight: bold;
-  font-size: max(1rem, 2vmin);
+  font-size: clamp(1.2rem, 3vmin, 2rem);
 }
 
 nav li.active-route {
@@ -104,16 +113,26 @@ main {
   color: #000;
 }
 
+main nav li.disabled {
+  color: #888;
+}
+
 .input-terms-heading {
   display: grid;
   grid-template-columns: min-content auto min-content;
   background-color: indigo;
   color: white;
+  font-weight: bold;
   padding: .5rem;
+  cursor: pointer;
+}
+
+.input-terms-heading .disabled {
+  color: rgba(255, 255, 255, .5);
 }
 
 .input-terms-list-expand-icon {
-  width: 1rem;
+
 }
 
 .input-terms-title {

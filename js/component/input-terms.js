@@ -13,12 +13,12 @@ export default Component.define
   <div class="input-terms-content content">
     <div class="input-terms-lists">
       <div class="input-terms-list">
-        <div class="input-terms-heading">
+        <div class="input-terms-heading" aria-expanded="true">
           <span class="input-terms-list-expand-icon">&#9660;</span>
           <div class="input-terms-title">
             Example Terms
           </div>
-          <span class="input-terms-list-delete">&#10006;<span>
+          <span class="input-terms-list-delete disabled">&#10006;<span>
         </div>
         <div class="input-terms-list-list">
         
@@ -29,7 +29,7 @@ export default Component.define
   <nav>
     <ul>
       <li class="import" data-action="import-list">Import List</li>
-      <li data-action="add-list">Add List</li>
+      <li data-action="add-list" class="disabled">Add List</li>
     </ul>
   </nav>
 </div>`
