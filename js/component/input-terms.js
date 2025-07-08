@@ -1,9 +1,8 @@
 import Component from '../component.js';
+import { importCsv } from '../csv.js';
+import { filePrompt } from '../file.js';
 import { terms } from '../terms.js';
-import { escapeRegExp } from '../regex.js';
 
-const regex = '[,](?=(?:(?:[^"]*"){2})*[^"]*$)';
-const delimiter = ';,';
 const termColumn = 0;
 const matchColumn = 1;
 
@@ -39,32 +38,26 @@ export default Component.define
     super(element);
 
     element.querySelector('.import').addEventListener('click', () => {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.multiple = true;
-      input.accept = '*/*';
-      input.onchange = (e) => {
-        const { files } = e.target;
+      filePrompt({ read: files => {
         for (let i = 0, len = files.length; i < len; ++i) {
           const file = files[i];
           const { name } = file;
           const reader = new FileReader();
-          reader.readAsText(file, 'utf8');
-          reader.onload = readerEvent => {
+          reader.addEventListener('load', ({ target }) => {
             console.log('Importing file: ', name);
-            for (const line of readerEvent.target.result.split('\n')) {
-              if (!line) {
+            const csv = importCsv({
+              text: target.result,
+            });
+            for (const columns of csv) {
+              if (columns.length <= 2) {
                 continue;
               }
-              const columns = line.split(
-                new RegExp(regex.replace(',', escapeRegExp(delimiter)))
-              );
               terms.addTerm(columns[termColumn], columns[matchColumn]);
             }
-          };
+          });
+          reader.readAsText(file, 'utf8');
         }
-      };
-      input.click();
+      } });
     });
 
     element.querySelector('.input-terms-heading').addEventListener('click', ({ currentTarget }) => {
