@@ -68,7 +68,7 @@ nav ul {
 nav li {
   cursor: pointer;
   text-transform: uppercase;
-  padding: 1rem 0;
+  padding: clamp(1rem, calc(5vmax - clamp(1.2rem, 3vmin, 2rem)), 1.8rem) 0;
   font-weight: bold;
   font-size: clamp(1.2rem, 3vmin, 2rem);
 }
