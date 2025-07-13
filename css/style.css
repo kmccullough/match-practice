@@ -88,6 +88,10 @@ main {
   overflow: hidden;
 }
 
+.disabled {
+  cursor: default !important;
+}
+
 .content {
   overflow-y: auto;
   padding: var(--primary-padding);
@@ -144,9 +148,14 @@ main nav li.disabled {
 
 .input-term-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr min-content;
   gap: var(--primary-padding);
   padding-bottom: var(--primary-padding);
+}
+
+.input-term-row-delete {
+  align-self: center;
+  cursor: pointer;
 }
 
 .input-terms-content {
@@ -156,6 +165,16 @@ main nav li.disabled {
 .input-terms input {
   box-sizing: border-box;
   width: 100%;
+}
+
+.input-terms-list-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--primary-padding);
+}
+
+.input-terms-list-list .disabled {
+  color: #aaa;
 }
 
 .terms {

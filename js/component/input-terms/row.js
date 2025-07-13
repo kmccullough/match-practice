@@ -1,6 +1,7 @@
-import { factoryFromHtml } from '../../element.js';
+import Component from '../../component.js';
 
-export const inputTermsRowFactory = factoryFromHtml(
+export default Component.define
+
 `<div class="input-term-row">
   <div class="input-term">
     <label>
@@ -14,5 +15,27 @@ export const inputTermsRowFactory = factoryFromHtml(
       <input type="text">
     </label>
   </div>
-</div>
-`);
+  <span class="input-term-row-delete">&#10006;<span>
+</div>`
+
+(class extends Component {
+  constructor(element) {
+    super(element);
+
+    element.querySelector('.input-term-row-delete').addEventListener('click', () => {
+
+    });
+  }
+
+  setTerm(term) {
+    this.element.querySelector('.input-term input')
+      .value = term;
+    return this;
+  }
+
+  setMatch(match) {
+    this.element.querySelector('.input-match input')
+      .value = match;
+    return this;
+  }
+});

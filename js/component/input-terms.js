@@ -1,7 +1,9 @@
 import Component from '../component.js';
 import { importCsv } from '../csv.js';
 import { filePrompt } from '../file.js';
-import { terms } from '../terms.js';
+import { ListMapCache } from '../list-map-cache.js';
+import InputTermsRowComponent from './input-terms/row.js';
+import { terms } from '../service/terms.js';
 
 const termColumn = 0;
 const matchColumn = 1;
@@ -19,8 +21,10 @@ export default Component.define
           </div>
           <span class="input-terms-list-delete disabled">&#10006;<span>
         </div>
-        <div class="input-terms-list-list">
-        
+        <div class="input-terms-list-list"></div>
+        <div class="input-terms-list-actions">
+          <button class="input-terms-list-import-terms">Import Terms</button>
+          <button class="input-terms-list-add-term">Add Term</button>
         </div>
       </div>
     </div>
@@ -34,8 +38,28 @@ export default Component.define
 </div>`
 
 (class extends Component {
+  termsListMap = new ListMapCache();
+
   constructor(element) {
     super(element);
+
+    this.termsListMap
+      .setList(terms.terms)
+      .setKey('id')
+      .setCreate(() => InputTermsRowComponent())
+      .setUpdate((cmp, item) => {
+        cmp.setTerm(item.term).setMatch(item.match);
+      })
+    ;
+
+    terms.on('change', () => {
+      this.termsListMap.updateMap();
+      const list = this.element.querySelector('.input-terms-list-list');
+      list.innerHTML = '';
+      for (const item of this.termsListMap.map) {
+        list.append(item.map.element);
+      }
+    });
 
     element.querySelector('.import').addEventListener('click', () => {
       filePrompt({ read: files => {

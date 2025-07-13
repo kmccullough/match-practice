@@ -1,14 +1,12 @@
 import { Events } from '../events.js';
-import { terms } from '../terms.js';
 import { routes } from './routes.js';
+import { terms } from './terms.js';
 
 export const practice = new class PracticeService {
-  events = new Events();
-
+  events = new Events().setContext(this);
   on(event, callback) {
     return this.events.on(event, callback);
   }
-
   off(event, callback) {
     return this.events.off(event, callback);
   }
@@ -32,7 +30,7 @@ export const practice = new class PracticeService {
     this.terms = terms.getRandomByCount(this.termCount)
       .map((term, index) => ({ ...term, index }));
     this.incorrectCount = 0;
-    this.events.emitWithContext(this, 'start');
+    this.events.emit('start');
     routes.transitionTo('practice');
   }
 

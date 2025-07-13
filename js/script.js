@@ -2,7 +2,7 @@ import { plansEl, practiceEl, termsEl } from './elements.js';
 import { linkTo } from './helper/link-to.js';
 import { routes } from './routes.js';
 import { helpers } from './service/helpers.js';
-import { terms } from './terms.js';
+import { terms } from './service/terms.js';
 
 helpers
   .register('[data-link-to]', linkTo)

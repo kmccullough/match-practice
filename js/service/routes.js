@@ -1,7 +1,7 @@
 import { Events } from '../events.js';
 
 export const routes = new class RoutesService {
-  events = new Events();
+  events = new Events().setContext(this);
 
   on(event, callback) {
     return this.events.on(event, callback);
@@ -17,10 +17,10 @@ export const routes = new class RoutesService {
       return;
     }
     if (currentRoute) {
-      this.events.emitWithContext(this, 'exit-route', currentRoute);
+      this.events.emit('exit-route', currentRoute);
     }
     this.currentRoute = route;
-    this.events.emitWithContext(this, 'enter-route', route);
+    this.events.emit('enter-route', route);
   }
 
   isActive(route) {
