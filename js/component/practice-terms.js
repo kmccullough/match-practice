@@ -19,6 +19,7 @@ export default Component.define
   elementTermMap;
   elementMatchMap;
   incorrectElements;
+  correctElements;
 
   constructor(element) {
     super(element);
@@ -35,9 +36,10 @@ export default Component.define
     this.matchElements = [];
     this.emptyTermElements = [];
     this.emptyMatchElements = [];
-    this.elementTermMap = new WeakMap();
-    this.elementMatchMap = new WeakMap();
-    this.incorrectElements = new WeakMap();
+    this.elementTermMap = new WeakMap;
+    this.elementMatchMap = new WeakMap;
+    this.incorrectElements = new WeakMap;
+    this.correctElements = new WeakSet;
 
     this.termsListElement.innerText = '';
 
@@ -86,8 +88,7 @@ export default Component.define
   }
 
   selectElement(selectionIndex, element) {
-    const term = (selectionIndex ? this.elementMatchMap : this.elementTermMap).get(element);
-    if (term.correct) {
+    if (this.correctElements.has(element)) {
       return;
     }
     if (this.selectedElements[selectionIndex]) {
@@ -104,7 +105,9 @@ export default Component.define
       return;
     }
     const term = this.elementTermMap.get(termEl);
-    const isMatch = term === this.elementMatchMap.get(matchEl);
+    const match = this.elementMatchMap.get(matchEl);
+    const isMatch = practice.crossTermMatches.get(term.term).includes(match.match)
+      || practice.crossMatchTerms.get(match.match).includes(term.term);
     const oldClass = isMatch ? 'incorrect' : 'correct';
     const newClass = isMatch ? 'correct' : 'incorrect';
     termEl.classList.remove(oldClass, 'selected');
@@ -112,7 +115,6 @@ export default Component.define
     matchEl.classList.remove(oldClass, 'selected');
     matchEl.classList.add(newClass);
     this.selectedElements = [ null, null ];
-    term.correct = isMatch;
     if (isMatch) {
       this.setCorrectElements(termEl, matchEl);
     } else {
@@ -123,8 +125,12 @@ export default Component.define
   }
 
   setCorrectElements(...elements) {
+    const { correctElements } = this;
+    for (const el of elements) {
+      correctElements.add(el);
+    }
+    const empties = [ this.emptyTermElements, this.emptyMatchElements ];
     setTimeout(() => {
-      const empties = [ this.emptyTermElements, this.emptyMatchElements ];
       for (let i = 0; i < elements.length; ++i) {
         const el = elements[i];
         el.classList.remove('correct');
@@ -142,7 +148,7 @@ export default Component.define
         clearTimeout(incorrectElements.get(el));
         incorrectElements.delete(el);
       }
-      this.incorrectElements.set(el,
+      incorrectElements.set(el,
         setTimeout(() => {
           el.classList.remove('incorrect');
         }, practice.incorrectDisplayTime)

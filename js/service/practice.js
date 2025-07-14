@@ -20,6 +20,8 @@ export const practice = new class PracticeService {
   nextTermIndex = 0;
   terms = [];
   incorrectCount;
+  crossTermMatches;
+  crossMatchTerms;
 
   get termCount() {
     return (this.roundCount ?? 0) * (this.termCountPerRound ?? 0);
@@ -27,8 +29,22 @@ export const practice = new class PracticeService {
 
   start() {
     this.nextTermIndex = 0;
+    const cross = [
+      this.crossTermMatches = new Map,
+      this.crossMatchTerms = new Map,
+    ];
     this.terms = terms.getRandomByCount(this.termCount)
-      .map((term, index) => ({ ...term, index }));
+      .map((term, index) => {
+        const terms = [ term.term, term.match ];
+        for (let i = 0; i < 2; ++i) {
+          let matches = cross[i].get(terms[i]);
+          if (!matches) {
+            cross[i].set(terms[i], matches = []);
+          }
+          matches.push(terms[i ? 0 : 1]);
+        }
+        return { ...term, index };
+      });
     this.incorrectCount = 0;
     this.events.emit('start');
     routes.transitionTo('practice');

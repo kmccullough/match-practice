@@ -73,7 +73,7 @@ export default Component.define
               text: target.result,
             });
             for (const columns of csv) {
-              if (columns.length <= 2) {
+              if (columns.length < 2) {
                 continue;
               }
               terms.addTerm(columns[termColumn], columns[matchColumn]);
