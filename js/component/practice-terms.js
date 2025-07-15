@@ -135,6 +135,7 @@ export default Component.define
         const el = elements[i];
         el.classList.remove('correct');
         el.classList.add('empty');
+        correctElements.delete(el);
         empties[i].push(el);
       }
       this.fillTerms();
