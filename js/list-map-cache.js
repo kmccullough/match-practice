@@ -31,6 +31,11 @@ export class ListMapCache {
     return this;
   }
 
+  setBeforeUpdate(beforeUpdate) {
+    this.beforeUpdate = beforeUpdate;
+    return this;
+  }
+
   setUpdate(update) {
     this.update = update;
     return this;
@@ -38,7 +43,7 @@ export class ListMapCache {
 
   updateMap() {
     this.map = [];
-    let { create, key, keyMap, list, map, update } = this;
+    let { beforeUpdate, create, key, keyMap, list, map, update } = this;
     if (typeof key == 'function') {
       key = key(this);
     }
@@ -46,6 +51,7 @@ export class ListMapCache {
       list = list(this);
     }
     const remainingKeys = new Set(this.keyMap.keys());
+    beforeUpdate(this);
     for (const item of list) {
       let itemKey = key ? get(item, key) : item;
       let mapped = item;

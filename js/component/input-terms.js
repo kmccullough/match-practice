@@ -2,8 +2,8 @@ import Component from '../component.js';
 import { importCsv } from '../csv.js';
 import { filePrompt } from '../file.js';
 import { ListMapCache } from '../list-map-cache.js';
-import InputTermsRowComponent from './input-terms/row.js';
 import { terms } from '../service/terms.js';
+import InputTermsListComponent from './input-terms/list.js';
 
 const termColumn = 0;
 const matchColumn = 1;
@@ -12,22 +12,7 @@ export default Component.define
 
 `<div class="input-terms">
   <div class="input-terms-content content">
-    <div class="input-terms-lists">
-      <div class="input-terms-list">
-        <div class="input-terms-heading" aria-expanded="true">
-          <span class="input-terms-list-expand-icon">&#9660;</span>
-          <div class="input-terms-title">
-            Example Terms
-          </div>
-          <span class="input-terms-list-delete disabled">&#10006;<span>
-        </div>
-        <div class="input-terms-list-list"></div>
-        <div class="input-terms-list-actions">
-          <button class="input-terms-list-import-terms">Import Terms</button>
-          <button class="input-terms-list-add-term">Add Term</button>
-        </div>
-      </div>
-    </div>
+    <div class="input-terms-lists"></div>
   </div>
   <nav>
     <ul>
@@ -38,28 +23,25 @@ export default Component.define
 </div>`
 
 (class extends Component {
-  termsListMap = new ListMapCache();
+  termsListsMap = new ListMapCache();
 
   constructor(element) {
     super(element);
 
-    this.termsListMap
-      .setList(terms.terms)
+    const lists = this.element.querySelector('.input-terms-lists');
+
+    this.termsListsMap
+      .setList([ { id: 1 } ])
       .setKey('id')
-      .setCreate(() => InputTermsRowComponent())
-      .setUpdate((cmp, item) => {
-        cmp.setTerm(item.term).setMatch(item.match);
+      .setCreate(() => InputTermsListComponent())
+      .setBeforeUpdate(() => lists.innerHTML = '')
+      .setUpdate(cmp => {
+        cmp.setList(terms.terms);
+        lists.append(cmp.element);
       })
     ;
 
-    terms.on('change', () => {
-      this.termsListMap.updateMap();
-      const list = this.element.querySelector('.input-terms-list-list');
-      list.innerHTML = '';
-      for (const item of this.termsListMap.map) {
-        list.append(item.map.element);
-      }
-    });
+    terms.on('change', () => this.termsListsMap.updateMap());
 
     element.querySelector('.import').addEventListener('click', () => {
       filePrompt({ read: files => {
@@ -82,23 +64,6 @@ export default Component.define
           reader.readAsText(file, 'utf8');
         }
       } });
-    });
-
-    element.querySelector('.input-terms-heading').addEventListener('click', ({ currentTarget }) => {
-      const icon = currentTarget.querySelector('.input-terms-list-expand-icon');
-      const list = element.querySelector('.input-terms-list-list');
-      const isExpanded = currentTarget.getAttribute('aria-expanded') !== 'true';
-      currentTarget.setAttribute('aria-expanded', isExpanded);
-      icon.innerHTML = isExpanded ? '&#9660;' : '&#9658;';
-      if (isExpanded) {
-        list.style.display = '';
-      } else {
-        list.style.display = 'none';
-      }
-    });
-
-    element.querySelector('.input-terms-list-delete').addEventListener('click', () => {
-
     });
   }
 });
