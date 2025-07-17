@@ -1,4 +1,4 @@
-import { selectAll } from '../element.js';
+import { selectAll } from '../util/element.js';
 
 export const helpers = new class HelpersService {
   helpers = [];

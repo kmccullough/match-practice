@@ -1,4 +1,4 @@
-import { Events } from '../events.js';
+import { Events } from '../util/events.js';
 
 export const routes = new class RoutesService {
   events = new Events().setContext(this);

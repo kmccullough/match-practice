@@ -1,9 +1,9 @@
-import Component from '../component.js';
-import { importCsv } from '../csv.js';
-import { filePrompt } from '../file.js';
-import { ListMapCache } from '../list-map-cache.js';
 import { terms } from '../service/terms.js';
-import InputTermsListComponent from './input-terms/list.js';
+import TermsListComponent from './terms/list.js';
+import Component from '../util/component.js';
+import { importCsv } from '../util/csv.js';
+import { filePrompt } from '../util/file.js';
+import { ListMapCache } from '../util/list-map-cache.js';
 
 const termColumn = 0;
 const matchColumn = 1;
@@ -33,7 +33,7 @@ export default Component.define
     this.termsListsMap
       .setList([ { id: 1 } ])
       .setKey('id')
-      .setCreate(() => InputTermsListComponent())
+      .setCreate(() => TermsListComponent())
       .setBeforeUpdate(() => lists.innerHTML = '')
       .setUpdate(cmp => {
         cmp.setList(terms.terms);

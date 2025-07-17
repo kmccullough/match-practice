@@ -1,9 +1,9 @@
-import { shuffle } from '../array.js';
-import Component from '../component.js';
-import { select } from '../element.js';
+import PracticeRowComponent from './practice/row.js';
+import PracticeTermComponent from './practice/row/term.js';
 import { practice } from '../service/practice.js';
-import PracticeTermsRowComponent from './practice-terms/row.js';
-import PracticeTermComponent from './practice-terms/row/term.js';
+import { shuffle } from '../util/array.js';
+import Component from '../util/component.js';
+import { select } from '../util/element.js';
 
 export default Component.define
 
@@ -45,7 +45,7 @@ export default Component.define
 
     const { termCountPerRound } = practice;
     for (let i = 0; i < termCountPerRound; ++i) {
-      const termRowCmp = PracticeTermsRowComponent();
+      const termRowCmp = PracticeRowComponent();
       const termRowEl = termRowCmp.element;
 
       const termCmp = PracticeTermComponent();

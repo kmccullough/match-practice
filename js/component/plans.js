@@ -1,5 +1,5 @@
-import Component from '../component.js';
 import { practice } from '../service/practice.js';
+import Component from '../util/component.js';
 
 export default Component.define
 

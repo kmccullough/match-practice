@@ -1,5 +1,5 @@
-import { shuffle } from '../array.js';
-import { Events } from '../events.js';
+import { shuffle } from '../util/array.js';
+import { Events } from '../util/events.js';
 
 export const terms = new class TermsService {
   /** @type {{ term: string, match: string }[]} */

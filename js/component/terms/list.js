@@ -1,6 +1,6 @@
-import Component from '../../component.js';
-import { ListMapCache } from '../../list-map-cache.js';
 import InputTermsRowComponent from './list/row.js';
+import Component from '../../util/component.js';
+import { ListMapCache } from '../../util/list-map-cache.js';
 
 export default Component.define
 

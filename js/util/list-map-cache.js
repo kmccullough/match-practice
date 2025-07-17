@@ -1,5 +1,5 @@
-import { get } from './object.js';
 import { IterableWeaklyMap } from './iterable-weakly-map.js';
+import { get } from './object.js';
 
 const isSet = value => value !== null && value !== undefined;
 

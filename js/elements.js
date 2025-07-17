@@ -1,11 +1,11 @@
-import InputTermsComponent from './component/input-terms.js';
-import PracticeSetupComponent from './component/practice-setup.js';
-import PracticeTermsComponent from './component/practice-terms.js';
+import PlanComponent from './component/plans.js';
+import PracticeComponent from './component/practice.js';
+import TermsComponent from './component/terms.js';
 
 export const mainEl = document.querySelector('main');
-export const termsComponent = InputTermsComponent();
-export const plansComponent = PracticeSetupComponent();
-export const practiceComponent = PracticeTermsComponent();
+export const termsComponent = TermsComponent();
+export const plansComponent = PlanComponent();
+export const practiceComponent = PracticeComponent();
 
 export const termsEl = termsComponent.element;
 export const plansEl = plansComponent.element;

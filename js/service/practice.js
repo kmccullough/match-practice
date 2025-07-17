@@ -1,6 +1,6 @@
-import { Events } from '../events.js';
 import { routes } from './routes.js';
 import { terms } from './terms.js';
+import { Events } from '../util/events.js';
 
 export const practice = new class PracticeService {
   events = new Events().setContext(this);
