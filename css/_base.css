@@ -1,0 +1,149 @@
+:root {
+  --primary-padding: 2vmin;
+  --term-radius: 2rem;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.8rem;
+}
+
+html,
+body,
+.wrapper {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: min-content auto min-content;
+  grid-template-areas:
+    'header'
+    'main'
+    'nav'
+  ;
+}
+
+header {
+  z-index: 0;
+}
+
+header {
+  grid-area: header;
+  background-color: rebeccapurple;
+  color: white;
+}
+
+header h1 {
+  margin: .5rem 1rem;
+  font-size: clamp(1rem, 4vmax, 3rem);
+}
+
+main {
+  grid-area: main;
+  overflow: hidden;
+}
+
+nav:not(.secondary) {
+  grid-area: nav;
+}
+
+.disabled {
+  cursor: default !important;
+}
+
+.content {
+  overflow-y: auto;
+  padding: var(--primary-padding);
+}
+
+.input-terms-list-list  {
+  padding-top: .5rem;
+}
+
+.input-term-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr min-content;
+  gap: var(--primary-padding);
+  padding-bottom: var(--primary-padding);
+}
+
+.input-term-row-delete {
+  align-self: center;
+  cursor: pointer;
+}
+
+.input-terms input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.terms-list {
+  --terms-border-width: 2px;
+  display: grid;
+  padding: var(--primary-padding);
+  min-height: calc(100% - (var(--primary-padding) + var(--terms-border-width)) * 2);
+  border: 2px solid rgba(0, 0, 0, .5);
+  border-radius: var(--term-radius);
+}
+
+.term-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--primary-padding);
+}
+
+.term-row:not(:first-child) {
+  padding-top: var(--primary-padding);
+}
+
+.term {
+  border: 1px solid rgba(0, 0, 0, .5);
+  border-radius: var(--term-radius);
+  padding: var(--primary-padding);
+  font-size: 1.5rem;
+  transition: all .5s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.term.empty {
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.term.selected {
+  background-color: lightskyblue;
+}
+
+.term.correct,
+.term.empty {
+  background-color: palegreen;
+}
+
+.term.incorrect {
+  background-color: lightcoral;
+}
+
+@media screen and (min-width: 480px) {
+  .wrapper {
+    grid-template-rows: min-content min-content auto;
+    grid-template-areas:
+      'header'
+      'nav'
+      'main'
+    ;
+  }
+}

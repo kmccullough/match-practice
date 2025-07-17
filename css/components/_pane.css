@@ -1,0 +1,9 @@
+.pane {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.pane--menu {
+  display: grid;
+  grid-template-rows: auto min-content;
+}

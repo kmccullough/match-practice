@@ -10,11 +10,11 @@ const matchColumn = 1;
 
 export default Component.define
 
-`<div class="input-terms">
-  <div class="input-terms-content content">
+`<div class="input-terms pane pane--menu">
+  <div class="content">
     <div class="input-terms-lists"></div>
   </div>
-  <nav>
+  <nav class="secondary">
     <ul>
       <li class="import" data-action="import-list">Import List</li>
       <li data-action="add-list" class="disabled">Add List</li>

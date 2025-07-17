@@ -1,0 +1,62 @@
+nav {
+  z-index: 0;
+  background-color: black;
+  color: white;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0px, 1fr));
+  text-align: center;
+}
+
+nav li {
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: clamp(1rem, calc(5vmax - clamp(1.2rem, 3vmin, 2rem)), 1.8rem) 0;
+  font-weight: bold;
+  font-size: clamp(1.2rem, 3vmin, 2rem);
+}
+
+nav li.active-route {
+  background-color: #444;
+  color: white;
+}
+
+nav li.disabled {
+  background-color: black !important;
+  color: #888 !important;
+}
+
+nav li:hover {
+  background-color: #666;
+  color: white;
+}
+
+nav.secondary {
+  background-color: #aaa;
+  color: #222;
+}
+
+nav.secondary li.disabled {
+  background-color: #aaa !important;
+  color: #888 !important;
+}
+
+nav.secondary ul {
+  grid-template-columns: repeat(auto-fit, minmax(0px, 1fr));
+}
+
+nav.secondary li:hover {
+  background-color: #ccc;
+  color: #000;
+}
+
+.tertiary-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--primary-padding);
+}

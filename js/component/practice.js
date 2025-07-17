@@ -7,7 +7,7 @@ import { select } from '../util/element.js';
 
 export default Component.define
 
-`<div class="terms content"><div class="terms-list"></div></div>`
+`<div class="pane content"><div class="terms-list"></div></div>`
 
 (class extends Component {
   termsListElement;

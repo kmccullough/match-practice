@@ -1,0 +1,14 @@
+.heading {
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  background-color: indigo;
+  color: white;
+  font-weight: bold;
+  padding: .5rem;
+  gap: .5rem;
+  cursor: pointer;
+}
+
+.heading .disabled {
+  color: rgba(255, 255, 255, .5) !important;
+}
