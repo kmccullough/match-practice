@@ -1,12 +1,8 @@
+import { importer } from '../service/importer.js';
 import { terms } from '../service/terms.js';
 import TermsListComponent from './terms/list.js';
 import Component from '../util/component.js';
-import { importCsv } from '../util/csv.js';
-import { filePrompt } from '../util/file.js';
 import { ListMapCache } from '../util/list-map-cache.js';
-
-const termColumn = 0;
-const matchColumn = 1;
 
 export default Component.define
 
@@ -17,7 +13,7 @@ export default Component.define
   <nav class="secondary">
     <ul>
       <li class="import" data-action="import-list">Import List</li>
-      <li data-action="add-list" class="disabled">Add List</li>
+      <li data-action="add-list">Add List</li>
     </ul>
   </nav>
 </div>`
@@ -31,39 +27,36 @@ export default Component.define
     const lists = this.element.querySelector('.input-terms-lists');
 
     this.termsListsMap
-      .setList([ { id: 1 } ])
+      .setList(terms.lists)
       .setKey('id')
-      .setCreate(() => TermsListComponent())
+      .setCreate(item => {
+        const cmp = TermsListComponent()
+        cmp.on('delete', () => terms.deleteList(item.id));
+        cmp.on('delete-term', id => terms.deleteTerm(item.id, id));
+        return cmp;
+      })
       .setBeforeUpdate(() => lists.innerHTML = '')
-      .setUpdate(cmp => {
-        cmp.setList(terms.terms);
+      .setUpdate((cmp, item) => {
+        cmp
+          .setId(item.id)
+          .setName(item.name)
+          .setList(item.terms)
+        ;
         lists.append(cmp.element);
       })
     ;
 
     terms.on('change', () => this.termsListsMap.updateMap());
 
-    element.querySelector('.import').addEventListener('click', () => {
-      filePrompt({ read: files => {
-        for (let i = 0, len = files.length; i < len; ++i) {
-          const file = files[i];
-          const { name } = file;
-          const reader = new FileReader();
-          reader.addEventListener('load', ({ target }) => {
-            console.log('Importing file: ', name);
-            const csv = importCsv({
-              text: target.result,
-            });
-            for (const columns of csv) {
-              if (columns.length < 2) {
-                continue;
-              }
-              terms.addTerm(columns[termColumn], columns[matchColumn]);
-            }
-          });
-          reader.readAsText(file, 'utf8');
+    element.querySelector('[data-action="import-list"]')
+      .addEventListener('click', async () => {
+        const data = await importer.importFromFile();
+        for (const list of data) {
+          terms.addList(list.name, list.terms);
         }
-      } });
-    });
+      });
+
+    element.querySelector('[data-action="add-list"]')
+      .addEventListener('click', () => terms.addList());
   }
 });

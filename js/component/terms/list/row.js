@@ -22,9 +22,8 @@ export default Component.define
   constructor(element) {
     super(element);
 
-    element.querySelector('.input-term-row-delete').addEventListener('click', () => {
-
-    });
+    element.querySelector('.input-term-row-delete')
+      .addEventListener('click', () => this.events.emit('delete'));
   }
 
   setTerm(term) {

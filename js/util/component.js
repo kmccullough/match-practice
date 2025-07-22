@@ -1,11 +1,21 @@
 import { factoryFromHtml } from './element.js';
 import { expr } from './tag-template.js';
+import { Events } from './events.js';
 
 export class Component {
   /**
    * @type {HTMLElement}
    */
   element;
+
+  events = new Events().setContext(this)
+    .setDebounce(true);
+  on(event, callback) {
+    return this.events.on(event, callback);
+  }
+  off(event, callback) {
+    return this.events.off(event, callback);
+  }
 
   constructor(element) {
     if (this._baseConstructed) {

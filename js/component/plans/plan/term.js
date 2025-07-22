@@ -11,25 +11,26 @@ export default Component.define
 </div>`
 
 (class extends Component {
-  events = new Events().setContext(this);
-  on(event, callback) {
-    return this.events.on(event, callback);
-  }
-  off(event, callback) {
-    return this.events.off(event, callback);
-  }
-
   constructor(element) {
     super(element);
 
     element.querySelector('input').addEventListener('click', e => {
-      this.events.emit('check', e.target.checked, this.term);
+      this.events.emit('check', e.target.checked);
     });
   }
 
-  setTerm(term) {
-    this.term = term;
-    this.element.querySelector('.label').innerText = term.name;
-    this.element.querySelector('input').checked = term.selected;
+  setName(name) {
+    this.element.querySelector('.label').innerText = name;
+    return this;
+  }
+
+  setChecked(checked) {
+    this.element.querySelector('input').checked = checked;
+    return this;
+  }
+
+  setEmpty(isEmpty) {
+    this.element.querySelector('.label').classList.toggle('empty', isEmpty);
+    return this;
   }
 });

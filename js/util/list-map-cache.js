@@ -51,7 +51,7 @@ export class ListMapCache {
       list = list(this);
     }
     const remainingKeys = new Set(this.keyMap.keys());
-    beforeUpdate(this);
+    beforeUpdate(list, this);
     for (const item of list) {
       let itemKey = key ? get(item, key) : item;
       let mapped = item;

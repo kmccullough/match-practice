@@ -1,4 +1,5 @@
 import PlanComponent from './plans/plan.js';
+import { plans } from '../service/plans.js';
 import Component from '../util/component.js';
 import { ListMapCache } from '../util/list-map-cache.js';
 
@@ -10,7 +11,7 @@ export default Component.define
   </div>
   <nav class="secondary">
     <ul>
-      <li data-action="add-plan" class="disabled">Add Plan</li>
+      <li data-action="add-plan">Add Plan</li>
     </ul>
   </nav>
 </div>`
@@ -21,17 +22,37 @@ export default Component.define
   constructor(element) {
     super(element);
 
-    const plans = this.element.querySelector('.plans-list');
+    const plansList = this.element.querySelector('.plans-list');
 
     this.plansListMap
-      .setList([ { id: 1 } ])
+      .setList(plans.plans)
       .setKey('id')
-      .setCreate(() => PlanComponent())
-      .setBeforeUpdate(() => plans.innerHTML = '')
-      .setUpdate(cmp => {
-        plans.append(cmp.element);
+      .setCreate(item => {
+        const cmp = PlanComponent();
+        cmp.on('selected', (isSelected, listId) =>
+          plans.selectTermList(item.id, listId, isSelected)
+        );
+        cmp.on('delete', () => plans.deletePlan(item.id));
+        return cmp;
       })
-      .updateMap()
+      .setBeforeUpdate(() => plansList.innerHTML = '')
+      .setUpdate((cmp, item) => {
+        cmp
+          .setPlanId(item.id)
+          .setName(item.name)
+          .setSelectedListIds(item.selectedListIds)
+        ;
+        plansList.append(cmp.element);
+      })
     ;
+
+    plans.on('change', () => {
+      this.plansListMap.updateMap();
+    });
+
+    element.querySelector('[data-action="add-plan"]')
+      .addEventListener('click', () => {
+        plans.addPlan();
+      });
   }
 });

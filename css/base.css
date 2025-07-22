@@ -72,6 +72,10 @@ nav:not(.secondary) {
   padding-top: .5rem;
 }
 
+.content-item:not(:first-child) {
+  margin-top: .5rem;
+}
+
 .input-term-row {
   display: grid;
   grid-template-columns: 1fr 1fr min-content;
@@ -135,6 +139,10 @@ nav:not(.secondary) {
 
 .term.incorrect {
   background-color: lightcoral;
+}
+
+.empty {
+  color: #ccc;
 }
 
 @media screen and (min-width: 480px) {

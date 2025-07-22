@@ -1,6 +1,7 @@
 import { routes } from './routes.js';
 import { terms } from './terms.js';
 import { Events } from '../util/events.js';
+import { plans } from './plans.js';
 
 export const practice = new class PracticeService {
   events = new Events().setContext(this);
@@ -27,13 +28,14 @@ export const practice = new class PracticeService {
     return (this.roundCount ?? 0) * (this.termCountPerRound ?? 0);
   }
 
-  start() {
+  start(planId) {
     this.nextTermIndex = 0;
     const cross = [
       this.crossTermMatches = new Map,
       this.crossMatchTerms = new Map,
     ];
-    this.terms = terms.getRandomByCount(this.termCount)
+    const listIds = plans.getOrAddPlan(planId).selectedListIds;
+    this.terms = terms.getRandomByCount(this.termCount, listIds)
       .map((term, index) => {
         const terms = [ term.term, term.match ];
         for (let i = 0; i < 2; ++i) {
