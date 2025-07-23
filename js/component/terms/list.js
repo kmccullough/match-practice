@@ -6,17 +6,17 @@ import { ListMapCache } from '../../util/list-map-cache.js';
 
 export default Component.define
 
-`<div class="input-terms-list content-item">
-  <div class="expands-heading heading" aria-expanded="true">
-    <span class="expands-icon">&#9660;</span>
+`<div class="input-terms-list content-item" data-expands>
+  <div class="expands-heading heading" data-expands-head>
+    <span class="expands-icon" data-expands-icon>&#9660;</span>
     <div class="list-name"></div>
     <span class="input-terms-list-delete disabled">&#10006;<span>
   </div>
-  <div class="expands-body">
+  <div class="expands-body" data-expands-body>
     <div class="input-terms-list-list"></div>
     <div class="actions tertiary-nav">
       <button data-action="import-terms">Import Terms</button>
-      <button class="input-terms-list-add-term">Add Term</button>
+      <button data-action="add-term">Add Term</button>
     </div>
   </div>
 </div>`
@@ -28,7 +28,6 @@ export default Component.define
     super(element);
 
     const list = element.querySelector('.input-terms-list-list');
-    const body = element.querySelector('.expands-body');
 
     this.termsListMap
       .setKey('id')
@@ -44,25 +43,17 @@ export default Component.define
       })
     ;
 
-    element.querySelector('.expands-heading')
-      .addEventListener('click', ({ currentTarget }) => {
-        const icon = currentTarget.querySelector('.expands-icon');
-        const isExpanded = currentTarget.getAttribute('aria-expanded') !== 'true';
-        currentTarget.setAttribute('aria-expanded', isExpanded);
-        icon.innerHTML = isExpanded ? '&#9660;' : '&#9658;';
-        if (isExpanded) {
-          body.style.display = '';
-        } else {
-          body.style.display = 'none';
-        }
-      });
-
     element.querySelector('[data-action="import-terms"]')
       .addEventListener('click', async () => {
         const data = await importer.importFromFile();
         for (const list of data) {
           terms.addTerms(this.id, list.terms);
         }
+      });
+
+    element.querySelector('[data-action="add-term"]')
+      .addEventListener('click', async () => {
+        terms.addTerms(this.id, [ { term: '', match: '', weight: 1 } ]);
       });
 
     element.querySelector('.input-terms-list-delete')

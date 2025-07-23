@@ -1,6 +1,7 @@
 import { factoryFromHtml } from './element.js';
-import { expr } from './tag-template.js';
 import { Events } from './events.js';
+import { helpers } from '../service/helpers.js';
+import { expr } from './tag-template.js';
 
 export class Component {
   /**
@@ -38,6 +39,7 @@ export function component(html, ...values) {
     }
     return () => {
       const element = elementFactory();
+      helpers.apply(element);
       return new ComponentClass(element);
     };
   };

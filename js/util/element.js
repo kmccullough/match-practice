@@ -45,21 +45,53 @@ export function removeElement(el) {
  */
 
 /**
+ * @typedef SelectOptions
+ * @property {ElementsContexts} [context]
+ * @property {ElementsSelectors} [ignoreChildren]
+ * @property {ElementsSelectors} [ignoreNode]
+ * @property {ElementsSelectors} [ignoreTree]
+ * @return {HTMLElement[]}
+ */
+/**
  * @param {ElementsSelectors} selectors
- * @param {ElementsContexts} contexts
+ * @param {SelectAllOptions} [options]
  * @return {HTMLElement|null}
  */
-export function select(selectors, contexts = document.body) {
-  return selectAll(selectors, contexts, 1)[0] ?? null;
+export function select(selectors, options = {}) {
+  return selectAll(selectors, { ...options, max: 1 })[0] ?? null;
 }
 
 /**
+ * @typedef SelectAllSpecificOptions
+ * @property {number} [max]
+ */
+/**
+ * @typedef {SelectOptions|SelectAllSpecificOptions} SelectAllOptions
+ */
+/**
  * @param {ElementsSelectors} selectors
- * @param {ElementsContexts} contexts
- * @param {number} max
+ * @param {SelectAllOptions} [options]
  * @return {HTMLElement[]}
  */
-export function selectAll(selectors, contexts = document.body, max = Infinity) {
+export function selectAll(selectors, options = {}) {
+  const {
+    max = Infinity,
+    ignoreChildren, ignoreNode, ignoreTree,
+  } = options;
+  let {
+    context: contexts = document.body,
+  } = options;
+  const opts = { context: contexts };
+  const ignoredTreeNodes = !ignoreTree ? []
+    : selectAll(ignoreTree, opts);
+  const ignoredNodes = [
+    ...(!ignoreNode ? [] : selectAll(ignoreNode, opts)),
+    ...ignoredTreeNodes,
+  ];
+  const ignoredChildren = [
+    ...(!ignoreChildren ? [] : selectAll(ignoreChildren, opts)),
+    ...ignoredTreeNodes,
+  ];
   contexts = Array.isArray(contexts) ? contexts : [ contexts ];
   selectors = Array.isArray(selectors) ? selectors : [ selectors ];
   let results = new Set;
@@ -68,10 +100,11 @@ export function selectAll(selectors, contexts = document.body, max = Infinity) {
     if (!selector) {
       continue;
     }
-    if (typeof selectors[s] === 'function') {
-      results.push(...selectAll(selector(), contexts, max - results.size));
+    const potentials = [];
+    if (typeof selector === 'function') {
+      potentials.push(...selectAll(selector(), { ...opts, max: max - results.size }));
     } else if (selector instanceof HTMLElement) {
-      results.add(selector);
+      potentials.push(selector);
     } else {
       for (let c = 0; c < contexts.length && results.size < max; ++c) {
         const context = contexts[c];
@@ -80,19 +113,26 @@ export function selectAll(selectors, contexts = document.body, max = Infinity) {
         }
         if (max - results.size === 1) {
           if (context.matches(selector)) {
-            results.add(context);
+            potentials.push(context);
           } else {
             const match = context.querySelector(selector);
             if (match) {
-              results.add(match);
+              potentials.push(match);
             }
           }
         } else {
           if (context.matches(selector)) {
-            results.add(context);
+            potentials.push(context);
           }
           for (const el of context.querySelectorAll(selector)) {
-            results.add(el);
+            potentials.push(el);
+          }
+        }
+        for (const potential of potentials) {
+          if (!ignoredNodes.includes(potential)
+            && !ignoredChildren.some(el => el.contains(potential))
+          ) {
+            results.add(potential);
           }
         }
       }

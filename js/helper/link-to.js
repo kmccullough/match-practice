@@ -1,6 +1,5 @@
 import { routes } from '../service/routes.js';
 
-const linkSet = new WeakSet;
 const links = [];
 
 routes.on('enter-route', routeName => {
@@ -21,10 +20,6 @@ function setLinkToClasses(element) {
 }
 
 export function linkTo(element) {
-  if (linkSet.has(element)) {
-    return;
-  }
-  linkSet.add(element);
   links.push(new WeakRef(element));
   element.addEventListener('click', ({ currentTarget }) =>
     routes.transitionTo(currentTarget.dataset.linkTo)

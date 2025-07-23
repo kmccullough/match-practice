@@ -6,13 +6,13 @@ import { ListMapCache } from '../../util/list-map-cache.js';
 
 export default Component.define
 
-`<div class="plan content-item">
-  <div class="expands-heading heading" aria-expanded="true">
-    <span class="expands-icon">&#9660;</span>
+`<div class="plan content-item" data-expands>
+  <div class="expands-heading heading" data-expands-head>
+    <span class="expands-icon" data-expands-icon>&#9660;</span>
     <div class="plan-title"></div>
     <span class="plan-delete disabled">&#10006;<span>
   </div>
-  <div class="expands-body">
+  <div class="expands-body" data-expands-body>
     <fieldset>
       <legend>Terms</legend>
       <div class="plan-terms"></div>
@@ -35,7 +35,6 @@ export default Component.define
     super(element);
 
     const termsListEl = element.querySelector('.plan-terms');
-    const body = element.querySelector('.expands-body');
     const start = this.startEl = element.querySelector('[data-action="plan-start"]');
 
     terms.on('change', () => this.termsListMap.updateMap());
@@ -84,19 +83,6 @@ export default Component.define
       })
       .updateMap()
     ;
-
-    element.querySelector('.expands-heading')
-      .addEventListener('click', ({ currentTarget }) => {
-        const icon = currentTarget.querySelector('.expands-icon');
-        const isExpanded = currentTarget.getAttribute('aria-expanded') !== 'true';
-        currentTarget.setAttribute('aria-expanded', isExpanded);
-        icon.innerHTML = isExpanded ? '&#9660;' : '&#9658;';
-        if (isExpanded) {
-          body.style.display = '';
-        } else {
-          body.style.display = 'none';
-        }
-      });
 
     element.querySelector('.plan-delete')
       .addEventListener('click', () => this.events.emit('delete'));

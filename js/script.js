@@ -1,13 +1,12 @@
+import './helpers.js';
+
 import { plansEl, practiceEl, termsEl } from './elements.js';
-import { linkTo } from './helper/link-to.js';
 import { routes } from './routes.js';
 import { helpers } from './service/helpers.js';
 import { plans } from './service/plans.js';
 import { terms } from './service/terms.js';
 
-helpers
-  .register('[data-link-to]', linkTo)
-  .apply([ document.body, termsEl, plansEl, practiceEl ])
+helpers.apply([ document.body, termsEl, plansEl, practiceEl ]);
 
 // Test data
 const testTerms = [];
