@@ -25,7 +25,7 @@ export const practice = new class PracticeService {
   crossMatchTerms;
 
   get termCount() {
-    return (this.roundCount ?? 0) * (this.termCountPerRound ?? 0);
+    return (this.roundCount ?? 1) * (this.termCountPerRound ?? 5);
   }
 
   start(planId) {

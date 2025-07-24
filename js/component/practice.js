@@ -23,7 +23,7 @@ export default Component.define
 
   constructor(element) {
     super(element);
-    this.termsListElement = select('.terms-list', element);
+    this.termsListElement = select('.terms-list', { context: element });
     practice.on('start', () => {
       this.renderInitialTermElements();
       this.fillTerms();
